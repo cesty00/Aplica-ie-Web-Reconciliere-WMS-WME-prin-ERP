@@ -2,7 +2,7 @@
 
 ## 1. Scop
 
-Acest document descrie pornirea locala a scheletului MVP-00.
+Acest document descrie pornirea locala a scheletului MVP si comenzile de baza pentru dezvoltare.
 
 Aplicatia ramane read-only fata de WMS si WME. Nu exista integrare live si nu exista scriere in sistemele sursa.
 
@@ -46,7 +46,30 @@ pytest
 ruff check .
 ```
 
-## 5. Frontend local fara Docker
+## 5. Migrare baza de date
+
+Cu PostgreSQL pornit prin Docker Compose:
+
+```bash
+cd backend
+alembic upgrade head
+```
+
+Generare migrare noua, dupa modificari de model:
+
+```bash
+cd backend
+alembic revision --autogenerate -m "describe change"
+```
+
+Rollback ultima migrare:
+
+```bash
+cd backend
+alembic downgrade -1
+```
+
+## 6. Frontend local fara Docker
 
 ```bash
 cd frontend
@@ -62,9 +85,9 @@ npm run lint
 npm run build
 ```
 
-## 6. Status MVP-00
+## 7. Status MVP-00
 
-MVP-00 livreaza doar scheletul tehnic:
+MVP-00 livreaza scheletul tehnic:
 
 - backend FastAPI;
 - endpoint /health;
@@ -75,11 +98,33 @@ MVP-00 livreaza doar scheletul tehnic:
 - Docker Compose;
 - CI GitHub Actions.
 
-## 7. Limite MVP-00
+## 8. Status MVP-01
 
-Nu include:
+MVP-01 livreaza schema initiala de baza de date:
 
-- schema baza de date;
+- configurare DATABASE_URL;
+- SQLAlchemy Base;
+- sesiune database;
+- modele ORM;
+- Alembic config;
+- migrare initiala;
+- test metadata pentru tabelele MVP-01.
+
+Tabele incluse:
+
+- products;
+- lots;
+- import_batches;
+- wms_events;
+- wme_events;
+- reconciliation_runs;
+- reconciliation_matches;
+- audit_logs.
+
+## 9. Limite curente
+
+Nu include inca:
+
 - import WMS;
 - import WME;
 - matching;
