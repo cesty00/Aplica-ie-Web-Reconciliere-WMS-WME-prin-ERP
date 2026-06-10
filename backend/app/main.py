@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
 from app.api.imports import router as imports_router
+from app.api.normalization import router as normalization_router
 
 app = FastAPI(
     title="WMS-WME Reconciliation API",
@@ -9,6 +10,7 @@ app = FastAPI(
 )
 
 app.include_router(imports_router)
+app.include_router(normalization_router)
 
 
 @app.get("/health", tags=["system"])
